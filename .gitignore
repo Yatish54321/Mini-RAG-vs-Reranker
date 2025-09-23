@@ -1,0 +1,44 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# VS Code settings
+.vscode/
+*.code-workspace
+
+# Data files (FAISS index, SQLite DB, PDFs)
+data/chunks.db
+data/faiss_index.index
+data/industrial-safety-pdfs/
+data/id_map.json
+
+# Logs & outputs
+*.log
+examples/run_results.csv
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python egg & dist
+*.egg-info/
+dist/
+build/
+
+# Pipenv & Poetry
+Pipfile.lock
+poetry.lock
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Others
+*.tmp
+*.bak
