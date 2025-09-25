@@ -1,12 +1,10 @@
-
-````markdown
-# Mini-RAG vs Reranker Sprint 🏃‍♂️
+#### Mini-RAG vs Reranker Sprint 🏃‍♂️####
 
 This project is a mini retrieval-augmented generation (RAG) system designed to query and retrieve safety document information efficiently. It combines FAISS-based embedding search with Sentence Transformers for semantic similarity, along with a Streamlit UI and a FastAPI backend. The system supports both single-question and batch queries, provides a grounded answer with citations, and can abstain when no relevant information is found.
 
 ## Setup
 
-1. Clone the repository:
+**1. Clone the repository:**
 ```bash
 git clone https://github.com/Yatish54321/Mini-RAG-vs-Reranker.git
 cd Mini-RAG-vs-Reranker
@@ -18,7 +16,7 @@ Switch to the Version 2 branch:
 git checkout version-2
 ````
 
-2. Create a virtual environment:
+**2. Create a virtual environment:**
 
 ```bash
 python -m venv venv
@@ -26,14 +24,14 @@ source venv/bin/activate   # Linux/macOS
 venv\Scripts\activate      # Windows
 ```
 
-3. Install dependencies:
+**3. Install dependencies:**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Ensure the following data files are present in the `data/` directory:
-
+**4. Ensure the following data files are present in the `data/` directory:
+**
    * `faiss_index.index` (FAISS index of embeddings)
    * `id_map.json` (mapping of FAISS indices to chunk metadata)
    * `chunks.db` (SQLite database with document chunks)
