@@ -8,8 +8,14 @@ This project is a mini retrieval-augmented generation (RAG) system designed to q
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/Yatish54321/Mini-RAG-vs-Reranker.git
+cd Mini-RAG-vs-Reranker
+````
+
+Switch to the Version 2 branch:
+
+```bash
+git checkout version-2
 ````
 
 2. Create a virtual environment:
