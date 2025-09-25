@@ -1,4 +1,4 @@
-#### Mini-RAG vs Reranker Sprint 🏃‍♂️
+# Mini-RAG vs Reranker Sprint 🏃‍♂️
 
 This project is a mini retrieval-augmented generation (RAG) system designed to query and retrieve safety document information efficiently. It combines FAISS-based embedding search with Sentence Transformers for semantic similarity, along with a Streamlit UI and a FastAPI backend. The system supports both single-question and batch queries, provides a grounded answer with citations, and can abstain when no relevant information is found.
 
