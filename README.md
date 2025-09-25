@@ -1,173 +1,94 @@
-```markdown
-# Mini-RAG vs Reranker: Industrial Safety Document Search
 
-[![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+````markdown
+# Mini-RAG vs Reranker Sprint 🏃‍♂️
 
-**Mini-RAG vs Reranker** is a CPU-friendly, fast, and accurate document search system designed for **industrial safety PDFs**.  
-It combines **FAISS vector search**, **sentence-transformer embeddings**, and **hybrid reranker logic** to provide highly relevant results.
+This project is a mini retrieval-augmented generation (RAG) system designed to query and retrieve safety document information efficiently. It combines FAISS-based embedding search with Sentence Transformers for semantic similarity, along with a Streamlit UI and a FastAPI backend. The system supports both single-question and batch queries, provides a grounded answer with citations, and can abstain when no relevant information is found.
 
----
+## Setup
 
-## 🌟 Features
-
-- **PDF Ingestion**: Convert PDFs into chunked text stored in SQLite DB.  
-- **Embeddings**: CPU-friendly embeddings using `paraphrase-MiniLM-L3-v2`.  
-- **FAISS Search**: Fast vector similarity search across document chunks.  
-- **Hybrid Reranker**: Re-ranks retrieved results for higher relevance.  
-- **Interfaces**: 
-  - CLI demo via Rich  
-  - Optional FastAPI backend  
-  - Streamlit Web UI (optional)  
-- **Single & Batch Questions**: Run queries individually or in batch.  
-- **Examples**: `examples/questions.json` included for testing.  
-
----
-
-## 📂 Project Structure
-
-```
-
-Mini-RAG-vs-Reranker/
-│── **pycache**/
-│── data/
-│   ├── industrial-safety-pdfs/
-│   ├── chunks.db
-│   ├── faiss\_index.index
-│   ├── id\_map.json
-│   └── sources.json
-│
-│── examples/
-│   ├── questions.json
-│   └── run\_results.csv
-│
-│── api.py
-│── baseline\_search.py
-│── embeddings.py
-│── ingest.py
-│── main.py
-│── reranker\_hybrid.py
-│── requirement.txt
-│── README.md
-
-````
-
-> Large data files (FAISS index, PDFs) are **not tracked in Git**. Add them to `.gitignore`.
-
----
-
-## ⚡ Setup & Installation
-
-1. **Clone the repository**
+1. Clone the repository:
 ```bash
-git clone https://github.com/Yatish54321/Mini-RAG-vs-Reranker.git
-cd Mini-RAG-vs-Reranker
+git clone <repository-url>
+cd <repository-folder>
 ````
 
-2. **Create a virtual environment (recommended)**
+2. Create a virtual environment:
 
 ```bash
 python -m venv venv
-# Windows
-venv\Scripts\activate
-# macOS/Linux
-source venv/bin/activate
+source venv/bin/activate   # Linux/macOS
+venv\Scripts\activate      # Windows
 ```
 
-3. **Install dependencies**
+3. Install dependencies:
 
 ```bash
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
-4. **Prepare data**
+4. Ensure the following data files are present in the `data/` directory:
 
-* Place PDFs in `data/industrial-safety-pdfs/`.
-* Run ingestion and embeddings:
+   * `faiss_index.index` (FAISS index of embeddings)
+   * `id_map.json` (mapping of FAISS indices to chunk metadata)
+   * `chunks.db` (SQLite database with document chunks)
+   * Optional: `plain.txt` and `summary.txt` for simplifying answers
+
+## How to Run
+
+### Streamlit UI
 
 ```bash
-python ingest.py       # Convert PDFs → DB
-python embeddings.py   # Generate embeddings & FAISS index
+streamlit run main.py
 ```
 
----
+* Enter a single question or multiple questions in the sidebar.
+* The results table shows **Baseline vs Hybrid** retrieved chunks with their titles, page numbers, and scores.
+* Grounded answers with citations appear above the table.
 
-## 🚀 Usage
-
-### CLI Demo
-
-```bash
-python main.py
-```
-
-* Choose **single** or **batch** mode.
-* Enter questions to see **baseline** vs **hybrid** results side by side.
-
-### FastAPI Backend (Optional)
+### FastAPI Backend
 
 ```bash
 uvicorn api:app --reload
 ```
 
-* POST to `/ask` endpoint with JSON:
+* API endpoints:
 
-```json
-{
-  "question": "Who is responsible for safety protocols on site?"
-}
+  * `/ask` – for single question queries
+  * `/ask_batch` – for multiple questions in one request
+
+### Results Table
+
+The table compares **Baseline** (simple FAISS retrieval) vs **Hybrid** (reranked by keyword relevance) for each top-K chunk. Columns include rank, title, page number, and score. This helps visualize how reranking improves retrieval quality.
+
+## What I Learned
+
+Building this project deepened my understanding of hybrid retrieval systems and how semantic embeddings can be combined with keyword-based scoring for more precise document retrieval. Integrating both a UI and an API taught me practical workflow management, caching strategies, and performance tuning for embedding-heavy applications. Additionally, handling abstention logic and text deduplication highlighted the importance of filtering and cleaning results before presenting them to users.
+
+## Gratitude
+
+I am sincerely grateful for the opportunity to work on this project, which allowed me to apply modern NLP techniques to a real-world problem and improve my skills in building end-to-end retrieval systems.
+
+## Example cURL Requests
+
+### Easy Question
+
+```bash
+curl -X POST "http://127.0.0.1:8000/ask" \
+-H "Content-Type: application/json" \
+-d '{"question": "What is machine guarding?"}'
 ```
 
-* Returns top chunks from the documents.
+### Tricky Question
 
----
+```bash
+curl -X POST "http://127.0.0.1:8000/ask" \
+-H "Content-Type: application/json" \
+-d '{"question": "Who is aligarh?"}'
+```
 
-## 📝 Example Questions
-
-Located in `examples/questions.json`.
-Batch-test multiple questions in CLI using `||` as separator.
-
----
-
-## 📈 Logging
-
-`examples/run_results.csv` records all queries and retrieved results for evaluation.
-
----
-
-## 💡 Notes
-
-* CPU-only, **no paid API** required.
-* Embedding model: `sentence-transformers/paraphrase-MiniLM-L3-v2`.
-* FAISS index ensures **fast vector search** even on CPU.
-
----
-
-## 🛠️ Dependencies
-
-* Python 3.13
-* `sentence-transformers`
-* `faiss-cpu`
-* `numpy`
-* `rich`
-* `fastapi`
-* `uvicorn`
-* `pandas`
-
-*(All listed in `requirement.txt`)*
-
----
-
-## 📌 License
-
-MIT License. See `LICENSE` for details.
-
----
-
-## 👏 Credits
-
-* Developed for **industrial safety document retrieval assessment**.
-* Implements **RAG workflow** with hybrid reranker using FAISS and SentenceTransformers.
+* The tricky question demonstrates the system’s abstain logic when the query has no relevant match in the corpus.
 
 ```
 
----
+
+```

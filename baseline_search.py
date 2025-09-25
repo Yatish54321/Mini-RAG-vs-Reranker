@@ -11,8 +11,8 @@ DATA_DIR = "data"
 FAISS_INDEX_FILE = os.path.join(DATA_DIR, "faiss_index.index")
 ID_MAP_FILE = os.path.join(DATA_DIR, "id_map.json")
 
-TOP_K = 5  # Number of top chunks to retrieve
-EMBEDDING_MODEL = "sentence-transformers/paraphrase-MiniLM-L3-v2"  # CPU-friendly
+TOP_K = 5  
+EMBEDDING_MODEL = "sentence-transformers/paraphrase-MiniLM-L3-v2"  
 
 # -------------------------------
 # Load FAISS index and ID map
@@ -43,7 +43,7 @@ def search(query, top_k=TOP_K):
     
     results = []
     for dist, idx in zip(distances[0], indices[0]):
-        metadata = id_map.get(str(idx), {})
+        metadata = id_map.get(str(idx)) or id_map.get(idx, {})
         results.append({
             "chunk_id": metadata.get("chunk_id"),
             "title": metadata.get("title"),
